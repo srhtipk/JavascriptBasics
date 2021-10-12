@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stylees.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="main.js"></script>
+    <title>Uygulama2</title>
+</head>
+
+<body>
+
+    <script>
+        var name;
+        var surname;
+        var age;
+
+        function save() {
+            name = get_element_value_by_id("txt_name");
+            surname = get_element_value_by_id("txt_surname");
+            age = get_element_value_by_id("nmb_age");
+
+            if (name && surname && age) {
+                var add_tr = document.createElement("tr");
+
+                var add_td_name = document.createElement("td");
+                add_td_name.appendChild(document.createTextNode(name));
+                add_tr.appendChild(add_td_name);
+
+                var add_td_surname = document.createElement("td");
+                add_td_surname.appendChild(document.createTextNode(surname));
+                add_tr.appendChild(add_td_surname);
+
+                var add_td_age = document.createElement("td");
+                add_td_age.appendChild(document.createTextNode(age));
+                add_tr.appendChild(add_td_age);
+
+                var add_td_buttons = document.createElement("td");
+                add_td_buttons.className="btn-group btn-block";
+                var delete_button = document.createElement("input");
+                var update_button = document.createElement("input");
+                delete_button.setAttribute("type", "button");
+                delete_button.value = "Delete";
+                delete_button.className = "btn btn-danger";
+                //delete_button.onclick=del;
+                delete_button.setAttribute("onclick", "del(this)");
+                update_button.type = "button";
+                update_button.value = "Update";
+                update_button.className = "btn btn-success";
+                //update_button.onclick=updat;  
+                update_button.setAttribute("onclick", "updat(this)");
+                add_td_buttons.appendChild(delete_button);
+                add_td_buttons.appendChild(update_button);
+                add_tr.appendChild(add_td_buttons);
+
+                var table = document.getElementById("table_body");
+                table.appendChild(add_tr);
+
+                clear();
+
+            }
+
+            else {
+                alert("Enter all areas...");
+            }
+
+
+
+
+        };
+
+        function del(row_index) {
+            //alert("del");
+            var del_row = row_index.parentNode.parentNode.rowIndex;
+           // alert(del_row);
+            var delete_table = document.getElementById("tbl");
+            delete_table.deleteRow(del_row);
+        };
+
+        function updat(rw_index) {
+            //alert("update");
+            var update_row = rw_index.parentNode.parentNode.rowIndex;
+            //alert(update_row);
+
+            var update_name;
+            var update_surname;
+            var update_age;
+            var update_table = document.getElementById("tbl");
+
+
+            document.getElementById("txt_name").value = update_table.rows[update_row].cells[0].innerHTML;
+            document.getElementById("txt_surname").value = update_table.rows[update_row].cells[1].innerHTML;
+            document.getElementById("nmb_age").value = update_table.rows[update_row].cells[2].innerHTML;
+            var btn1 = document.getElementById("add_button");
+            btn1.style.display = "none";
+            var btn2 = document.getElementById("update_button");
+            btn2.style.display = "inline";
+
+            btn2.onclick = function () {
+               // alert("update2");
+               // alert(update_row);
+                update_table.rows[update_row].cells[0].innerHTML=document.getElementById("txt_name").value;
+                update_table.rows[update_row].cells[1].innerHTML=document.getElementById("txt_surname").value;
+                update_table.rows[update_row].cells[2].innerHTML=document.getElementById("nmb_age").value;
+                clear();
+                btn2.style.display="none";
+                btn1.style.display="inline";
+            };
+
+
+
+        };
+
+
+        function get_element_value_by_id(id) {
+            return document.getElementById(id).value;
+        };
+
+        function clear() {
+            document.getElementById("txt_name").value = "";
+            document.getElementById("txt_surname").value = "";
+            document.getElementById("nmb_age").value = "";
+        };
+
+    </script>
+
+
+    <div class="container">
+        <div class="row col-md-10 mx-auto mt-5 shadow-lg p-4">
+            <div class="col-md-4 overflow-hidden">
+                <input class="form-control" type="text" id="txt_name" placeholder="Enter name...">
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" type="text" id="txt_surname" placeholder="Enter surname...">
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" type="number" id="nmb_age" placeholder="Enter age...">
+            </div>
+            <div class="col-md-2">
+                <input type="button" value="Save" class="btn btn-primary btn-block" onclick="save()" id="add_button">
+                <input type="button" value="Update" class="btn btn-success btn-block mt-0" style="display:none;" id="update_button">
+            </div>
+        </div>
+        <div class="row col-md-10 mt-5 shadow-lg mx-auto">
+            <table class="table table-bordered table-striped table-hover" id="tbl">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center" style="width: 30%;">Name:</th>
+                        <th class="text-center" style="width: 30%;">Surname:</th>
+                        <th class="text-center" style="width: 20%;">Age:</th>
+                        <th class="text-center" style="width: 20%;">Options:</th>
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
