@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>JS ODEV 2.2</title>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        var name;
+        var surname;
+        var age;
+        document.addEventListener("keydown", (event) => {
+            if (event.keyCode == 13) {
+                save();
+            }
+        })
+
+        function save() {
+            name = document.getElementById("txt_name").value;
+            surname = document.getElementById("txt_surname").value;
+            age = document.getElementById("nmb_age").value;
+
+            if (name && surname && age) {
+                var add_tr = document.createElement("tr");
+
+                var td_name = document.createElement("td");
+                td_name.appendChild(document.createTextNode(name));
+                add_tr.appendChild(td_name);
+
+                var td_surname = document.createElement("td");
+                td_surname.appendChild(document.createTextNode(surname));
+                add_tr.appendChild(td_surname);
+
+                var td_age = document.createElement("td");
+                var td_age_content = document.createTextNode(age);
+                td_age.appendChild(td_age_content);
+                add_tr.appendChild(td_age);
+
+                var td_button = document.createElement("td");
+                var del_btn_inTd = document.createElement("input");
+                del_btn_inTd.type = "button";
+                del_btn_inTd.value = "Delete";
+                del_btn_inTd.className = "btn btn-danger"
+                del_btn_inTd.setAttribute("onclick", "del(this)");
+                var update_btn_inTd = document.createElement("input");
+                update_btn_inTd.type = "button";
+                update_btn_inTd.setAttribute("value", "Update");
+                // update_btn_inTd.value="Update"; ---Bir üst satırla aynı kod parçası
+                update_btn_inTd.className = "btn btn-success";
+                update_btn_inTd.setAttribute("onclick", "updat(this)");
+                td_button.className = "btn-group";
+                td_button.appendChild(del_btn_inTd);
+                td_button.appendChild(update_btn_inTd);
+                add_tr.appendChild(td_button);
+
+                var add_table = document.getElementById("tbl");
+                add_table.appendChild(add_tr);
+
+                clear();
+            }
+
+            else {
+                alert("Fill all of the gaps...");
+            }
+        };
+
+        function clear() {
+            document.getElementById("txt_name").value = "";
+            document.getElementById("txt_surname").value = "";
+            document.getElementById("nmb_age").value = "";
+        }
+
+        function del(del_row) {
+            let currentRowIndex = del_row.parentNode.parentNode.rowIndex;
+            let delete_table = document.getElementById("tbl");
+            delete_table.deleteRow(currentRowIndex);
+        }
+
+        function updat(update_row) {
+            let currentRowIndex = update_row.parentNode.parentNode.rowIndex;
+            let update_table = document.getElementById("tbl");
+            document.getElementById("txt_name").value = update_table.rows[currentRowIndex].cells[0].innerHTML;
+            document.getElementById("txt_surname").value = update_table.rows[currentRowIndex].cells[1].innerHTML;
+            document.getElementById("nmb_age").value = update_table.rows[currentRowIndex].cells[2].innerHTML;
+
+            document.getElementById("save_btn").style.display = "none";
+            document.getElementById("update_btn").style.display = "inline";
+
+            document.getElementById("update_btn").onclick = () => {
+                update_table.rows[currentRowIndex].cells[0].innerHTML = document.getElementById("txt_name").value;
+                update_table.rows[currentRowIndex].cells[1].innerHTML = document.getElementById("txt_surname").value;
+                update_table.rows[currentRowIndex].cells[2].innerHTML = document.getElementById("nmb_age").value;
+                clear();
+                document.getElementById("save_btn").style.display = "inline";
+                document.getElementById("update_btn").style.display = "none";
+            }
+        }
+
+    </script>
+
+    <div class="container">
+        <div class="col-md-10 mx-auto mt-5 text-center">
+            <div class="card d-block">
+                <div class="card-header">
+                    <h2>For Enroll Insert All of Gaps...</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- aşağıdaki gibi div boyutu ayarlayabilmek için -->
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="">Name:</label>
+                                <input class="form-control form-control-sm" type="text" id="txt_name">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="">Surname:</label>
+                                <input class="form-control form-control-sm" type="text" id="txt_surname">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="">Age:</label>
+                                <input class="form-control form-control-sm" type="number" id="nmb_age">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <input id="save_btn" type="button" class="btn btn-outline-primary btn-block"
+                                onclick="save()" value="Save">
+                        </div>
+                        <div class="col-12">
+                            <input id="update_btn" style="display: none;" type="button"
+                                class="btn btn-outline-success btn-block mt-2" name="" value="Update">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-footer">
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-10 mx-auto mt-5">
+            <table class="table shadow table-bordered" id="tbl">
+                <thead>
+                    <tr>
+                        <th style="width:30%;">Name:</th>
+                        <th style="width:30%;">Surname:</th>
+                        <th style="width:20%;">Age:</th>
+                        <th style="width:20%;">Options:</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
